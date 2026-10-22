@@ -84,6 +84,15 @@ const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const authForm = document.getElementById("authForm");
 const submitBtn = document.getElementById("submitBtn");
+
+// تشخيص واضح: تظهر رسالة بمجرد الضغط حتى لو منع المتصفح إرسال النموذج.
+submitBtn.addEventListener("click", () => {
+  if (!supabase) {
+    authStatus.textContent = "الاتصال غير جاهز. تأكد من الإنترنت ثم حدّث الصفحة.";
+    return;
+  }
+  authStatus.textContent = "وصل الضغط إلى الصفحة. إذا بقيت هذه الرسالة، تأكد من صحة البريد وكلمة المرور وأن كل الحقول المطلوبة مكتملة.";
+});
 let isSignup = true;
 let supabase = null;
 
@@ -161,7 +170,11 @@ try {
 
 authForm.addEventListener("submit",async(e)=>{
   e.preventDefault();
-  if(!supabase) return;
+  authStatus.textContent = "بدأ إرسال الطلب...";
+  if(!supabase) {
+    authStatus.textContent = "مكتبة الاتصال لم تعمل. حدّث الصفحة وتأكد من الإنترنت.";
+    return;
+  }
 
   const email = emailInput.value.trim();
   const password = passwordInput.value;
