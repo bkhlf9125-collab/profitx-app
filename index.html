@@ -1,236 +1,229 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ProfitX — المهام والمكافآت</title>
-  <meta name="description" content="ProfitX tasks, rewards, and USDT deposit demo">
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #0a1020; --panel: #111b30; --panel2: #17243c;
-      --text: #f4f7ff; --muted: #9aabc7; --line: #283954;
-      --accent: #61e6b2; --accent2: #9b8cff; --warning: #ffcc70;
-      --danger: #ff8e9b;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      background: radial-gradient(900px 450px at 80% -10%, #263d68 0%, transparent 60%), var(--bg);
-      color: var(--text); line-height: 1.6;
-    }
-    .wrap { width: min(100% - 28px, 900px); margin: 0 auto; padding: 22px 0 44px; }
-    header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:22px; }
-    .brand { display:flex; align-items:center; gap:10px; font-weight:900; font-size:1.25rem; letter-spacing:.2px; }
-    .logo { width:42px; height:42px; border-radius:14px; display:grid; place-items:center; color:#071a17; background:linear-gradient(135deg,var(--accent),#9bf2d1); font-weight:1000; box-shadow:0 8px 24px #61e6b233; }
-    .pill { border:1px solid var(--line); background:#101a2c; border-radius:999px; padding:6px 11px; color:var(--muted); font-size:.8rem; }
-    h1 { font-size:clamp(1.65rem, 6vw, 2.5rem); line-height:1.2; margin:0 0 10px; }
-    h2 { margin:0 0 8px; font-size:1.2rem; }
-    p { margin:0 0 12px; }
-    .muted { color:var(--muted); }
-    .hero { padding:25px; border:1px solid #31466a; border-radius:24px; background:linear-gradient(135deg,#172846eF,#111b30f5); margin-bottom:18px; }
-    .hero p { max-width:620px; color:#b7c6df; }
-    .hero-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
-    button, select { font:inherit; }
-    button { cursor:pointer; border:0; border-radius:12px; padding:11px 15px; font-weight:800; }
-    .primary { background:var(--accent); color:#071a17; }
-    .secondary { background:var(--panel2); color:var(--text); border:1px solid var(--line); }
-    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
-    .card { background:linear-gradient(180deg,#121e34,#0f192b); border:1px solid var(--line); border-radius:20px; padding:19px; min-width:0; }
-    .stat { font-size:1.65rem; font-weight:900; margin:4px 0; }
-    .eyebrow { color:var(--accent); font-weight:800; font-size:.82rem; margin-bottom:5px; }
-    .task { display:flex; gap:12px; align-items:flex-start; padding:13px 0; border-bottom:1px solid var(--line); }
-    .task:last-child { border-bottom:0; padding-bottom:0; }
-    .task-icon { flex:0 0 40px; width:40px; height:40px; border-radius:12px; display:grid; place-items:center; background:#203354; font-size:1.2rem; }
-    .task-body { flex:1; min-width:0; }
-    .task-title { font-weight:800; }
-    .task small { color:var(--muted); }
-    .task .secondary { padding:8px 10px; font-size:.85rem; }
-    .section { margin-top:18px; }
-    .section-head { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:12px; }
-    .deposit-card { border-color:#3b4e78; }
-    .notice { border:1px solid #69532b; background:#2b2417; color:#ffe0a1; border-radius:13px; padding:12px; font-size:.88rem; margin:12px 0; }
-    label { display:block; color:#bdcbe0; font-size:.9rem; margin-bottom:6px; font-weight:700; }
-    select { width:100%; padding:12px; color:var(--text); background:#0a1324; border:1px solid #344866; border-radius:12px; }
-    .address-box { margin-top:12px; border:1px solid #334965; background:#091323; padding:13px; border-radius:14px; }
-    .address { direction:ltr; text-align:left; overflow-wrap:anywhere; font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:.92rem; color:#d8fbed; margin:5px 0 12px; }
-    .address-actions { display:flex; flex-wrap:wrap; gap:8px; }
-    .address-actions button { flex:1; }
-    .status { min-height:24px; color:var(--accent); font-size:.9rem; margin-top:8px; }
-    .network-tag { display:inline-block; color:#b9f7df; background:#173a36; border:1px solid #2c6659; padding:3px 8px; border-radius:8px; font-size:.8rem; font-weight:800; }
-    .history { color:var(--muted); font-size:.9rem; padding:10px 0; border-bottom:1px solid var(--line); }
-    .history:last-child { border-bottom:0; }
-    footer { text-align:center; color:#7284a2; font-size:.82rem; padding-top:25px; }
-    @media(max-width:620px) { .grid { grid-template-columns:1fr; } .hero { padding:20px; } header { align-items:flex-start; } .task { flex-wrap:wrap; } .task .secondary { margin-right:52px; } }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ProfitX — حسابي والمهام</title>
+<style>
+:root{color-scheme:dark;--bg:#0a1020;--panel:#111b30;--line:#283954;--text:#f4f7ff;--muted:#9aabc7;--accent:#61e6b2}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;line-height:1.7}
+main{width:min(100% - 28px,760px);margin:25px auto}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px}
+h1,h2,p{margin-top:0}
+input,button{font:inherit;padding:12px;border-radius:10px;width:100%;margin:5px 0}
+input{background:#091323;color:white;border:1px solid var(--line)}
+button{border:0;background:var(--accent);color:#071a17;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+.secondary{background:#203354;color:white}
+.muted{color:var(--muted)}
+.row{display:flex;gap:10px}
+.row>*{flex:1;min-width:0}
+.hidden{display:none!important}
+.task{padding:12px 0;border-bottom:1px solid var(--line)}
+.status{overflow-wrap:anywhere;color:var(--accent);margin-top:10px}
+</style>
 </head>
 <body>
-  <main class="wrap">
-    <header>
-      <div class="brand"><div class="logo">PX</div><span>ProfitX</span></div>
-      <span class="pill">نسخة تجريبية</span>
-    </header>
+<main>
+<header class="card">
+<h1>💚 ProfitX</h1>
+<p class="muted">منصة المهام والمكافآت — النسخة قيد التطوير</p>
+</header>
 
-    <section class="hero">
-      <div class="eyebrow">المهام والمكافآت</div>
-      <h1>ابدأ مهامك مع ProfitX</h1>
-      <p>واجهة عربية بسيطة للمهام والمكافآت، مع صفحة إيداع USDT تعرض عناوين الاستقبال التي أُدخلت للمشروع.</p>
-      <div class="hero-actions">
-        <button class="primary" onclick="document.getElementById('deposit').scrollIntoView({behavior:'smooth'})">إيداع USDT</button>
-        <button class="secondary" onclick="document.getElementById('tasks').scrollIntoView({behavior:'smooth'})">عرض المهام</button>
-      </div>
-    </section>
+<section class="card" id="authCard">
+<h2 id="authTitle">إنشاء حساب جديد</h2>
+<form id="authForm">
+<input id="username" placeholder="اسم المستخدم" autocomplete="username" required>
+<input id="email" type="email" placeholder="البريد الإلكتروني" autocomplete="email" required>
+<input id="password" type="password" placeholder="كلمة المرور (8 أحرف على الأقل)" minlength="8" autocomplete="new-password" required>
+<div class="row">
+<button type="submit" id="submitBtn">إنشاء حساب</button>
+<button type="button" class="secondary" id="toggleBtn">لدي حساب</button>
+</div>
+</form>
+<div id="authStatus" class="status" role="status" aria-live="polite"></div>
+</section>
 
-    <section class="grid" aria-label="ملخص الحساب">
-      <article class="card">
-        <div class="muted">رصيد النقاط التجريبي</div>
-        <div class="stat"><span id="points">120</span> <small style="font-size:.8rem;color:#9aabc7">نقطة</small></div>
-        <div class="muted" style="font-size:.85rem">هذا الرصيد للعرض التجريبي فقط.</div>
-      </article>
-      <article class="card">
-        <div class="muted">المهام المكتملة</div>
-        <div class="stat"><span id="completed">0</span> / 6</div>
-        <div class="muted" style="font-size:.85rem">يتم حفظ التقدم على هذا الجهاز فقط.</div>
-      </article>
-    </section>
+<section class="card hidden" id="accountCard">
+<h2>أهلًا بك في ProfitX 👋</h2>
+<p>اسم المستخدم: <strong id="accountName">—</strong></p>
+<p class="muted" id="accountEmail"></p>
+<button id="logoutBtn" class="secondary" type="button">تسجيل الخروج</button>
+<div id="accountStatus" class="status" role="status"></div>
+</section>
 
-    <section class="section card deposit-card" id="deposit">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">المحفظة</div>
-          <h2>إيداع USDT</h2>
-        </div>
-        <span class="network-tag">3 شبكات</span>
-      </div>
-      <p class="muted">اختر الشبكة التي ستُرسل عليها USDT، ثم انسخ العنوان الظاهر أدناه.</p>
-      <div class="notice">تنبيه مهم: هذه صفحة عرض للعناوين فقط. لا يتم تأكيد الإيداع أو إضافة رصيد تلقائيًا في هذه النسخة. تأكد من الشبكة والعنوان في محفظتك قبل إرسال أي أموال.</div>
-      <label for="network">شبكة الإيداع</label>
-      <select id="network">
-        <option value="BEP20">BEP20 — BNB Smart Chain</option>
-        <option value="TRC20">TRC20 — TRON</option>
-        <option value="ERC20">ERC20 — Ethereum</option>
-      </select>
-      <div class="address-box">
-        <div class="muted" style="font-size:.82rem">عنوان الاستقبال</div>
-        <div class="address" id="depositAddress">0x293aa4b2ea8c46bcf0d5571c10faaac5ba747a89</div>
-        <div class="address-actions">
-          <button class="primary" id="copyAddress" type="button">نسخ العنوان</button>
-          <button class="secondary" id="showNetwork" type="button">تأكيد الشبكة المختارة</button>
-        </div>
-        <div class="status" id="depositStatus" role="status" aria-live="polite"></div>
-      </div>
-    </section>
+<section class="card">
+<h2>رصيد النقاط التجريبي</h2>
+<p><strong id="points">0</strong> نقطة</p>
+<p class="muted">هذا الرصيد تجريبي، وليس رصيدًا ماليًا محفوظًا في قاعدة البيانات.</p>
+</section>
 
-    <section class="section card" id="tasks">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">ابدأ الآن</div>
-          <h2>المهام المتاحة</h2>
-        </div>
-        <span class="pill">6 مهام تجريبية</span>
-      </div>
-      <div id="taskList"></div>
-    </section>
+<section class="card">
+<h2>المهام التجريبية</h2>
+<div id="tasks"></div>
+<p class="muted">إكمال هذه المهام لا يمنح مكافآت حقيقية حاليًا.</p>
+</section>
 
-    <section class="section card">
-      <h2>آخر النشاطات</h2>
-      <div id="history"><div class="history">مرحبًا بك في النسخة التجريبية من ProfitX.</div></div>
-    </section>
+<section class="card">
+<h2>إيداع USDT</h2>
+<p class="muted">ميزة عرض تجريبية فقط. لا ترسل أموالًا إلى عناوين غير مؤكدة.</p>
+<p>لم يتم تفعيل الإيداع أو التحقق من التحويلات.</p>
+</section>
+</main>
 
-    <footer>ProfitX © <span id="year"></span> — واجهة تجريبية وليست نظامًا ماليًا مكتملًا.</footer>
-  </main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://lbjhrixvmyfngcdjjhmb.supabase.co";
+const SUPABASE_KEY = "sb_publishable_3e68gHt7QZ6cW42ofzgj8Q_mvBBwyZS";
 
-  <script>
-    const addresses = {
-      BEP20: "0x293aa4b2ea8c46bcf0d5571c10faaac5ba747a89",
-      TRC20: "TDi2M1B7LHueSWj4Ex8az4Hdb8qHH1AZYD",
-      ERC20: "0x293aa4b2ea8c46bcf0d5571c10faaac5ba747a89"
-    };
-    const networkNames = {
-      BEP20: "BEP20 — BNB Smart Chain",
-      TRC20: "TRC20 — TRON",
-      ERC20: "ERC20 — Ethereum"
-    };
-    const network = document.getElementById("network");
-    const depositAddress = document.getElementById("depositAddress");
-    const depositStatus = document.getElementById("depositStatus");
+const authStatus = document.getElementById("authStatus");
+const accountStatus = document.getElementById("accountStatus");
+const usernameInput = document.getElementById("username");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const authForm = document.getElementById("authForm");
+const submitBtn = document.getElementById("submitBtn");
+let isSignup = true;
+let supabase = null;
 
-    function updateDepositAddress() {
-      depositAddress.textContent = addresses[network.value];
-      depositStatus.textContent = "";
-    }
-    network.addEventListener("change", updateDepositAddress);
+const demoTasks = [
+  ["استكشف لوحة التحكم",10],
+  ["افتح صفحة المهام",15],
+  ["راجع المحفظة",20],
+  ["تحقق من النشاطات",10],
+  ["اقرأ الإرشادات",15],
+  ["أكمل الجولة",25]
+];
+let demoPoints = 0;
+const completed = new Set();
 
-    document.getElementById("copyAddress").addEventListener("click", async () => {
-      const address = addresses[network.value];
-      try {
-        await navigator.clipboard.writeText(address);
-        depositStatus.textContent = "تم نسخ العنوان. تحقق من الشبكة قبل الإرسال.";
-      } catch (error) {
-        const range = document.createRange();
-        range.selectNodeContents(depositAddress);
-        const selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
-        depositStatus.textContent = "تعذّر النسخ التلقائي؛ حدّد العنوان وانسخه يدويًا.";
-      }
+function renderTasks(){
+  const list = document.getElementById("tasks");
+  list.replaceChildren();
+  demoTasks.forEach(([title,points],i)=>{
+    const row = document.createElement("div");
+    row.className = "task";
+    const label = document.createElement("p");
+    label.textContent = title + " — " + points + " نقطة تجريبية";
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = completed.has(i) ? "مكتملة" : "إكمال تجريبي";
+    btn.disabled = completed.has(i);
+    btn.addEventListener("click",()=>{
+      if(completed.has(i)) return;
+      completed.add(i);
+      demoPoints += points;
+      document.getElementById("points").textContent = demoPoints;
+      renderTasks();
     });
-    document.getElementById("showNetwork").addEventListener("click", () => {
-      depositStatus.textContent = "الشبكة المختارة: " + networkNames[network.value] + ". هذه الخطوة لا تؤكد وصول أي تحويل.";
-    });
+    row.append(label,btn);
+    list.append(row);
+  });
+}
+renderTasks();
 
-    const tasks = [
-      { icon: "📱", title: "استكشف لوحة التحكم", desc: "تعرّف على أقسام الموقع.", points: 10 },
-      { icon: "🧭", title: "افتح صفحة المهام", desc: "اطّلع على المهام المتاحة.", points: 15 },
-      { icon: "💼", title: "راجع المحفظة", desc: "تعرّف على صفحة الإيداع التجريبية.", points: 20 },
-      { icon: "🔔", title: "تحقق من النشاطات", desc: "شاهد سجل النشاطات.", points: 10 },
-      { icon: "📚", title: "اقرأ الإرشادات", desc: "تعرّف على طريقة استخدام الواجهة.", points: 15 },
-      { icon: "✅", title: "أكمل الجولة", desc: "أنهِ الجولة التجريبية.", points: 25 }
-    ];
-    const completedTasks = new Set();
-    const taskList = document.getElementById("taskList");
-    const history = document.getElementById("history");
+document.getElementById("toggleBtn").addEventListener("click",()=>{
+  isSignup = !isSignup;
+  document.getElementById("authTitle").textContent = isSignup ? "إنشاء حساب جديد" : "تسجيل الدخول";
+  submitBtn.textContent = isSignup ? "إنشاء حساب" : "دخول";
+  document.getElementById("toggleBtn").textContent = isSignup ? "لدي حساب" : "إنشاء حساب جديد";
+  usernameInput.classList.toggle("hidden",!isSignup);
+  usernameInput.required = isSignup;
+  passwordInput.autocomplete = isSignup ? "new-password" : "current-password";
+  authStatus.textContent = "";
+});
 
-    function addHistory(message) {
-      const item = document.createElement("div");
-      item.className = "history";
-      item.textContent = message;
-      history.prepend(item);
-    }
-    function renderTasks() {
-      taskList.innerHTML = "";
-      tasks.forEach((task, index) => {
-        const row = document.createElement("div");
-        row.className = "task";
-        const icon = document.createElement("div");
-        icon.className = "task-icon";
-        icon.textContent = task.icon;
-        const body = document.createElement("div");
-        body.className = "task-body";
-        const title = document.createElement("div");
-        title.className = "task-title";
-        title.textContent = task.title;
-        const desc = document.createElement("small");
-        desc.textContent = task.desc + " · +" + task.points + " نقطة تجريبية";
-        body.append(title, desc);
-        const btn = document.createElement("button");
-        btn.className = completedTasks.has(index) ? "secondary" : "primary";
-        btn.textContent = completedTasks.has(index) ? "مكتملة" : "إكمال";
-        btn.disabled = completedTasks.has(index);
-        btn.addEventListener("click", () => {
-          if (completedTasks.has(index)) return;
-          completedTasks.add(index);
-          document.getElementById("completed").textContent = completedTasks.size;
-          document.getElementById("points").textContent = 120 + tasks.reduce((sum, t, i) => sum + (completedTasks.has(i) ? t.points : 0), 0);
-          addHistory("أكملت المهمة التجريبية: " + task.title);
-          renderTasks();
-        });
-        row.append(icon, body, btn);
-        taskList.append(row);
+function showAccount(user,profile){
+  document.getElementById("authCard").classList.add("hidden");
+  document.getElementById("accountCard").classList.remove("hidden");
+  document.getElementById("accountEmail").textContent = user.email || "";
+  document.getElementById("accountName").textContent =
+    profile?.username || user.user_metadata?.username || "مستخدم";
+}
+
+async function loadAccount(user){
+  const {data,error} = await supabase.from("profiles")
+    .select("username").eq("id",user.id).maybeSingle();
+  showAccount(user,error ? null : data);
+  accountStatus.textContent = error
+    ? "تم تسجيل الدخول، لكن تعذّر تحميل الملف الشخصي. تحقق من إعدادات قاعدة البيانات."
+    : "";
+}
+
+try {
+  if(!window.supabase) throw new Error("لم يتم تحميل مكتبة الاتصال.");
+  supabase = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+} catch(e) {
+  authStatus.textContent = "تعذّر تشغيل الاتصال. تحقق من الإنترنت وإعدادات Supabase.";
+  authForm.querySelectorAll("button").forEach(b=>b.disabled=true);
+}
+
+authForm.addEventListener("submit",async(e)=>{
+  e.preventDefault();
+  if(!supabase) return;
+
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+  const username = usernameInput.value.trim();
+
+  submitBtn.disabled = true;
+  authStatus.textContent = "جارٍ الاتصال...";
+
+  try {
+    if(isSignup){
+      const {data,error} = await supabase.auth.signUp({
+        email,password,options:{data:{username}}
       });
+      if(error) throw error;
+
+      if(data.session && data.user){
+        const {error:profileError} = await supabase.from("profiles")
+          .update({username}).eq("id",data.user.id);
+        if(profileError){
+          authStatus.textContent = "تم إنشاء الحساب، لكن تعذّر حفظ اسم المستخدم.";
+        } else {
+          authStatus.textContent = "تم إنشاء الحساب بنجاح.";
+        }
+        await loadAccount(data.user);
+      } else {
+        authStatus.textContent = "تم إرسال طلب إنشاء الحساب. افحص بريدك لتأكيد الحساب، ثم سجّل الدخول.";
+      }
+    } else {
+      const {data,error} = await supabase.auth.signInWithPassword({email,password});
+      if(error) throw error;
+      if(data.user) await loadAccount(data.user);
+      authStatus.textContent = "";
     }
-    renderTasks();
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+  } catch(error) {
+    authStatus.textContent = "تعذّر إكمال العملية: " + (error?.message || "خطأ غير معروف");
+  } finally {
+    submitBtn.disabled = false;
+  }
+});
+
+document.getElementById("logoutBtn").addEventListener("click",async()=>{
+  if(!supabase) return;
+  const {error} = await supabase.auth.signOut();
+  if(error){
+    accountStatus.textContent = "تعذّر تسجيل الخروج. حاول مجددًا.";
+    return;
+  }
+  document.getElementById("accountCard").classList.add("hidden");
+  document.getElementById("authCard").classList.remove("hidden");
+  authStatus.textContent = "تم تسجيل الخروج.";
+});
+
+if(supabase){
+  supabase.auth.onAuthStateChange((event,session)=>{
+    if(event === "SIGNED_IN" && session?.user){
+      setTimeout(()=>loadAccount(session.user),0);
+    }
+  });
+  supabase.auth.getSession().then(({data})=>{
+    if(data.session?.user) loadAccount(data.session.user);
+  });
+}
+</script>
 </body>
 </html>
