@@ -17,8 +17,6 @@ button{border:0;background:var(--accent);color:#071a17;font-weight:bold;cursor:p
 button:disabled{opacity:.55;cursor:not-allowed}
 .secondary{background:#203354;color:white}
 .muted{color:var(--muted)}
-.row{display:flex;gap:10px}
-.row>*{flex:1;min-width:0}
 .hidden{display:none!important}
 .task{padding:12px 0;border-bottom:1px solid var(--line)}
 .status{overflow-wrap:anywhere;color:var(--accent);margin-top:10px}
@@ -32,17 +30,26 @@ button:disabled{opacity:.55;cursor:not-allowed}
 </header>
 
 <section class="card" id="authCard">
-<h2 id="authTitle">إنشاء حساب جديد</h2>
-<form id="authForm">
-<input id="username" placeholder="اسم المستخدم" autocomplete="username" required>
-<input id="email" type="email" placeholder="البريد الإلكتروني" autocomplete="email" required>
-<input id="password" type="password" placeholder="كلمة المرور (8 أحرف على الأقل)" minlength="8" autocomplete="new-password" required>
-<div class="row">
-<button type="submit" id="submitBtn">إنشاء حساب</button>
-<button type="button" class="secondary" id="toggleBtn">لدي حساب</button>
-</div>
-</form>
-<div id="authStatus" class="status" role="status" aria-live="polite"></div>
+  <div class="card" style="margin:0 0 16px;padding:16px;background:#0d1729">
+    <h2>إنشاء حساب جديد</h2>
+    <form id="signupForm">
+      <input id="signupUsername" placeholder="اسم المستخدم" autocomplete="username" required>
+      <input id="signupEmail" type="email" placeholder="البريد الإلكتروني" autocomplete="email" required>
+      <input id="signupPassword" type="password" placeholder="كلمة المرور (8 أحرف على الأقل)" minlength="8" autocomplete="new-password" required>
+      <button type="submit" id="signupBtn">إنشاء حساب</button>
+    </form>
+    <div id="signupStatus" class="status" role="status" aria-live="polite"></div>
+  </div>
+
+  <div class="card" style="margin:0;padding:16px;background:#0d1729">
+    <h2>تسجيل الدخول</h2>
+    <form id="loginForm">
+      <input id="loginEmail" type="email" placeholder="البريد الإلكتروني" autocomplete="email" required>
+      <input id="loginPassword" type="password" placeholder="كلمة المرور" autocomplete="current-password" required>
+      <button type="submit" id="loginBtn">تسجيل الدخول</button>
+    </form>
+    <div id="loginStatus" class="status" role="status" aria-live="polite"></div>
+  </div>
 </section>
 
 <section class="card hidden" id="accountCard">
@@ -77,23 +84,13 @@ button:disabled{opacity:.55;cursor:not-allowed}
 const SUPABASE_URL = "https://lbjhrixvmyfngcdjjhmb.supabase.co";
 const SUPABASE_KEY = "sb_publishable_3e68gHt7QZ6cW42ofzgj8Q_mvBBwyZS";
 
-const authStatus = document.getElementById("authStatus");
+const signupForm = document.getElementById("signupForm");
+const loginForm = document.getElementById("loginForm");
+const signupStatus = document.getElementById("signupStatus");
+const loginStatus = document.getElementById("loginStatus");
 const accountStatus = document.getElementById("accountStatus");
-const usernameInput = document.getElementById("username");
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const authForm = document.getElementById("authForm");
-const submitBtn = document.getElementById("submitBtn");
-
-// تشخيص واضح: تظهر رسالة بمجرد الضغط حتى لو منع المتصفح إرسال النموذج.
-submitBtn.addEventListener("click", () => {
-  if (!supabase) {
-    authStatus.textContent = "الاتصال غير جاهز. تأكد من الإنترنت ثم حدّث الصفحة.";
-    return;
-  }
-  authStatus.textContent = "وصل الضغط إلى الصفحة. إذا بقيت هذه الرسالة، تأكد من صحة البريد وكلمة المرور وأن كل الحقول المطلوبة مكتملة.";
-});
-let isSignup = true;
+const signupBtn = document.getElementById("signupBtn");
+const loginBtn = document.getElementById("loginBtn");
 let supabase = null;
 
 const demoTasks = [
@@ -132,17 +129,6 @@ function renderTasks(){
 }
 renderTasks();
 
-document.getElementById("toggleBtn").addEventListener("click",()=>{
-  isSignup = !isSignup;
-  document.getElementById("authTitle").textContent = isSignup ? "إنشاء حساب جديد" : "تسجيل الدخول";
-  submitBtn.textContent = isSignup ? "إنشاء حساب" : "دخول";
-  document.getElementById("toggleBtn").textContent = isSignup ? "لدي حساب" : "إنشاء حساب جديد";
-  usernameInput.classList.toggle("hidden",!isSignup);
-  usernameInput.required = isSignup;
-  passwordInput.autocomplete = isSignup ? "new-password" : "current-password";
-  authStatus.textContent = "";
-});
-
 function showAccount(user,profile){
   document.getElementById("authCard").classList.add("hidden");
   document.getElementById("accountCard").classList.remove("hidden");
@@ -164,54 +150,64 @@ try {
   if(!window.supabase) throw new Error("لم يتم تحميل مكتبة الاتصال.");
   supabase = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 } catch(e) {
-  authStatus.textContent = "تعذّر تشغيل الاتصال. تحقق من الإنترنت وإعدادات Supabase.";
-  authForm.querySelectorAll("button").forEach(b=>b.disabled=true);
+  signupStatus.textContent = "تعذّر تشغيل الاتصال. تحقق من الإنترنت وإعدادات Supabase.";
+  loginStatus.textContent = "تعذّر تشغيل الاتصال. تحقق من الإنترنت وإعدادات Supabase.";
+  signupBtn.disabled = true;
+  loginBtn.disabled = true;
 }
 
-authForm.addEventListener("submit",async(e)=>{
+signupForm.addEventListener("submit",async(e)=>{
   e.preventDefault();
-  authStatus.textContent = "بدأ إرسال الطلب...";
-  if(!supabase) {
-    authStatus.textContent = "مكتبة الاتصال لم تعمل. حدّث الصفحة وتأكد من الإنترنت.";
+  signupStatus.textContent = "جارٍ إنشاء الحساب...";
+  if(!supabase){
+    signupStatus.textContent = "الاتصال غير جاهز. حدّث الصفحة وتأكد من الإنترنت.";
     return;
   }
-
-  const email = emailInput.value.trim();
-  const password = passwordInput.value;
-  const username = usernameInput.value.trim();
-
-  submitBtn.disabled = true;
-  authStatus.textContent = "جارٍ الاتصال...";
-
+  const username = document.getElementById("signupUsername").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value;
+  signupBtn.disabled = true;
   try {
-    if(isSignup){
-      const {data,error} = await supabase.auth.signUp({
-        email,password,options:{data:{username}}
-      });
-      if(error) throw error;
-
-      if(data.session && data.user){
-        const {error:profileError} = await supabase.from("profiles")
-          .update({username}).eq("id",data.user.id);
-        if(profileError){
-          authStatus.textContent = "تم إنشاء الحساب، لكن تعذّر حفظ اسم المستخدم.";
-        } else {
-          authStatus.textContent = "تم إنشاء الحساب بنجاح.";
-        }
-        await loadAccount(data.user);
-      } else {
-        authStatus.textContent = "تم إرسال طلب إنشاء الحساب. افحص بريدك لتأكيد الحساب، ثم سجّل الدخول.";
-      }
+    const {data,error} = await supabase.auth.signUp({
+      email,password,options:{data:{username}}
+    });
+    if(error) throw error;
+    if(data.session && data.user){
+      const {error:profileError} = await supabase.from("profiles")
+        .update({username}).eq("id",data.user.id);
+      signupStatus.textContent = profileError
+        ? "تم إنشاء الحساب، لكن تعذّر حفظ اسم المستخدم."
+        : "تم إنشاء الحساب بنجاح.";
+      await loadAccount(data.user);
     } else {
-      const {data,error} = await supabase.auth.signInWithPassword({email,password});
-      if(error) throw error;
-      if(data.user) await loadAccount(data.user);
-      authStatus.textContent = "";
+      signupStatus.textContent = "تم إرسال طلب إنشاء الحساب. افحص بريدك لتأكيد الحساب، ثم استخدم قسم تسجيل الدخول.";
     }
   } catch(error) {
-    authStatus.textContent = "تعذّر إكمال العملية: " + (error?.message || "خطأ غير معروف");
+    signupStatus.textContent = "تعذّر إنشاء الحساب: " + (error?.message || "خطأ غير معروف");
   } finally {
-    submitBtn.disabled = false;
+    signupBtn.disabled = false;
+  }
+});
+
+loginForm.addEventListener("submit",async(e)=>{
+  e.preventDefault();
+  loginStatus.textContent = "جارٍ تسجيل الدخول...";
+  if(!supabase){
+    loginStatus.textContent = "الاتصال غير جاهز. حدّث الصفحة وتأكد من الإنترنت.";
+    return;
+  }
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  loginBtn.disabled = true;
+  try {
+    const {data,error} = await supabase.auth.signInWithPassword({email,password});
+    if(error) throw error;
+    if(data.user) await loadAccount(data.user);
+    loginStatus.textContent = "";
+  } catch(error) {
+    loginStatus.textContent = "تعذّر تسجيل الدخول: " + (error?.message || "خطأ غير معروف");
+  } finally {
+    loginBtn.disabled = false;
   }
 });
 
@@ -224,7 +220,7 @@ document.getElementById("logoutBtn").addEventListener("click",async()=>{
   }
   document.getElementById("accountCard").classList.add("hidden");
   document.getElementById("authCard").classList.remove("hidden");
-  authStatus.textContent = "تم تسجيل الخروج.";
+  signupStatus.textContent = "تم تسجيل الخروج.";
 });
 
 if(supabase){
